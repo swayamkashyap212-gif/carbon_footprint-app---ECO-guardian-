@@ -1,0 +1,382 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum NotificationPlatform {
+  SWIGGY
+  ZOMATO
+  BLINKIT
+  ZEPTO
+  AMAZON
+  FLIPKART
+  UBER
+  OLA
+  OTHER
+}
+
+enum OrderStatus {
+  CONFIRMED
+  ACCEPTED
+  PREPARING
+  RIDER_ASSIGNED
+  PICKED_UP
+  ARRIVING_SOON
+  DELIVERED
+  COMPLETED
+  UNKNOWN
+}
+
+enum CarbonCategory {
+  FOOD_DELIVERY
+  GROCERY_DELIVERY
+  ECOMMERCE
+  FLIGHT
+  TRANSPORT
+  ELECTRICITY
+  FOOD
+  WASTE
+  WATER
+  LIFESTYLE
+}
+
+enum VehicleType {
+  ELECTRIC_BIKE
+  PETROL_BIKE
+  SCOOTER
+  PETROL_CAR
+  DIESEL_CAR
+  EV_CAR
+  UNKNOWN
+}
+
+enum AlertLevel {
+  GREEN
+  YELLOW
+  ORANGE
+  RED
+  CRITICAL
+}
+
+model User {
+  id                 String              @id @default(uuid())
+  email              String?             @unique
+  phone              String?             @unique
+  googleSubject      String?             @unique
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  profile            CarbonProfile?
+  notifications      NotificationEvent[]
+  activities         Activity[]
+  orders             Order[]
+  routes             Route[]
+  carbonRecords      CarbonRecord[]
+  ecoScores          EcoScore[]
+  predictions        Prediction[]
+  alerts             Alert[]
+  recommendations    Recommendation[]
+  recommendationEvents RecommendationEvent[]
+  gmailData          GmailData[]
+  ocrData            OcrData[]
+  pdfData            PdfData[]
+}
+
+model CarbonProfile {
+  id                  String   @id @default(uuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  encryptedHome       Json?
+  encryptedOffice     Json?
+  city                String?
+  monthlyBaselineKg   Float    @default(0)
+  currentEcoScore     Int      @default(70)
+  preferences         Json     @default("{}")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model NotificationEvent {
+  id              String               @id @default(uuid())
+  userId          String
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  packageName     String
+  platform        NotificationPlatform
+  title           String
+  body            String
+  merchantName    String?
+  restaurantName  String?
+  storeName       String?
+  orderStatus     OrderStatus          @default(UNKNOWN)
+  eventTimestamp  DateTime
+  rawPayload      Json
+  createdAt       DateTime             @default(now())
+  orderId         String?
+  order           Order?               @relation(fields: [orderId], references: [id])
+
+  @@index([userId, eventTimestamp])
+  @@index([platform, orderStatus])
+}
+
+model Activity {
+  id              String         @id @default(uuid())
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            CarbonCategory
+  source          String
+  status          String         @default("DETECTED")
+  detectedAt      DateTime       @default(now())
+  metadata        Json           @default("{}")
+  carbonRecords   CarbonRecord[]
+
+  @@index([userId, detectedAt])
+}
+
+model Order {
+  id                String               @id @default(uuid())
+  userId            String
+  user              User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform          NotificationPlatform
+  merchantName      String?
+  restaurantId      String?
+  restaurant        Restaurant?          @relation(fields: [restaurantId], references: [id])
+  storeId           String?
+  store             Store?               @relation(fields: [storeId], references: [id])
+  status            OrderStatus          @default(UNKNOWN)
+  category          CarbonCategory
+  amount            Float?
+  items             Json                 @default("[]")
+  destination       Json?
+  vehicleType       VehicleType          @default(UNKNOWN)
+  vehicleConfidence Float                @default(0)
+  routeId           String?
+  route             Route?               @relation(fields: [routeId], references: [id])
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  notifications     NotificationEvent[]
+  carbonRecords     CarbonRecord[]
+
+  @@index([userId, createdAt])
+  @@index([platform, status])
+}
+
+model Restaurant {
+  id          String   @id @default(uuid())
+  name        String
+  brand       String?
+  latitude    Float?
+  longitude   Float?
+  placeId     String?  @unique
+  metadata    Json     @default("{}")
+  orders      Order[]
+  createdAt   DateTime @default(now())
+}
+
+model Store {
+  id          String   @id @default(uuid())
+  name        String
+  brand       String?
+  latitude    Float?
+  longitude   Float?
+  placeId     String?  @unique
+  metadata    Json     @default("{}")
+  orders      Order[]
+  createdAt   DateTime @default(now())
+}
+
+model Route {
+  id              String         @id @default(uuid())
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  originLatitude  Float
+  originLongitude Float
+  destLatitude    Float
+  destLongitude   Float
+  distanceKm      Float
+  travelTimeMin   Int
+  routeMetadata   Json           @default("{}")
+  createdAt       DateTime       @default(now())
+  orders          Order[]
+  carbonRecords   CarbonRecord[]
+
+  @@index([userId, createdAt])
+}
+
+model VehicleEmissionFactor {
+  id              String      @id @default(uuid())
+  vehicleType     VehicleType @unique
+  kgCo2ePerKm     Float
+  source          String
+  factorVersion   String
+  effectiveFrom   DateTime
+  createdAt       DateTime    @default(now())
+}
+
+model CarbonRecord {
+  id              String          @id @default(uuid())
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category        CarbonCategory
+  activityId      String?
+  activity        Activity?       @relation(fields: [activityId], references: [id])
+  orderId         String?
+  order           Order?          @relation(fields: [orderId], references: [id])
+  routeId         String?
+  route           Route?          @relation(fields: [routeId], references: [id])
+  vehicleType     VehicleType?
+  distanceKm      Float?
+  packagingKg     Float           @default(0)
+  storageKg       Float           @default(0)
+  transportKg     Float           @default(0)
+  totalKgCo2e     Float
+  confidence      Float           @default(0.7)
+  explanation     Json            @default("{}")
+  occurredAt      DateTime
+  createdAt       DateTime        @default(now())
+
+  @@index([userId, occurredAt])
+  @@index([category, occurredAt])
+}
+
+model EcoScore {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score           Int
+  band            String
+  periodStart     DateTime
+  periodEnd       DateTime
+  breakdown       Json     @default("{}")
+  createdAt       DateTime @default(now())
+
+  @@index([userId, periodStart])
+}
+
+model Prediction {
+  id                         String   @id @default(uuid())
+  userId                     String
+  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dailyCarbonKg              Float
+  weeklyCarbonKg             Float
+  monthlyCarbonKg            Float
+  expectedFoodDeliveries     Int
+  expectedGroceryOrders      Int
+  expectedShoppingActivities Int
+  futureFootprintKg          Float
+  confidence                 Float
+  modelVersion               String
+  drivers                    Json     @default("[]")
+  createdAt                  DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Alert {
+  id          String     @id @default(uuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  level       AlertLevel
+  title       String
+  message     String
+  category    CarbonCategory?
+  metadata    Json       @default("{}")
+  readAt      DateTime?
+  createdAt   DateTime   @default(now())
+
+  @@index([userId, createdAt])
+  @@index([level])
+}
+
+model Recommendation {
+  id              String          @id @default(uuid())
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category        CarbonCategory?
+  title           String
+  description     String
+  potentialSaving Float
+  priority        Int             @default(3)
+  impactScore     Float           @default(0)
+  confidence      Float           @default(0.5)
+  adoptionProbability Float       @default(0.5)
+  costSavings     Float           @default(0)
+  timeSavingsMin  Float           @default(0)
+  difficulty      String          @default("medium")
+  source          String          @default("rule")
+  reasoning       Json            @default("{}")
+  metadata        Json            @default("{}")
+  deduplicationHash String?       @unique
+  expiresAt       DateTime?
+  shownAt         DateTime?
+  acceptedAt      DateTime?
+  completedAt     DateTime?
+  createdAt       DateTime        @default(now())
+
+  events          RecommendationEvent[]
+
+  @@index([userId, createdAt])
+}
+
+enum RecommendationEventType {
+  SHOWN
+  CLICKED
+  IGNORED
+  ADOPTED
+  COMPLETED
+  DISMISSED
+}
+
+model RecommendationEvent {
+  id                String                  @id @default(uuid())
+  userId            String
+  user              User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recommendationId  String?
+  recommendation    Recommendation?         @relation(fields: [recommendationId], references: [id], onDelete: SetNull)
+  eventType         RecommendationEventType
+  note              String?
+  context           Json                    @default("{}")
+  createdAt         DateTime                @default(now())
+
+  @@index([userId, createdAt])
+  @@index([recommendationId, eventType])
+}
+
+model GmailData {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messageHash String   @unique
+  sender      String
+  subject     String
+  extracted   Json
+  category    CarbonCategory?
+  createdAt   DateTime @default(now())
+}
+
+model OcrData {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceType  String
+  fileUrl     String?
+  rawText     String
+  extracted   Json
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model PdfData {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileUrl     String
+  documentType String
+  extracted   Json
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

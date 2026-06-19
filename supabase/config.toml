@@ -1,0 +1,24 @@
+project_id = "ecoguardian-ai"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+
+[auth]
+enabled = true
+site_url = "ecoguardian://auth"
+additional_redirect_urls = ["ecoguardian://auth/callback"]
+enable_signup = true
+
+[functions.ai-carbon-coach]
+verify_jwt = true
+
+[functions.notification-dispatcher]
+verify_jwt = false
+
+[functions.prediction-generate]
+verify_jwt = true
+
+[functions.carbon-ingest]
+verify_jwt = true

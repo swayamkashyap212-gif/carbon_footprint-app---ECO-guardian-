@@ -1,0 +1,10 @@
+﻿temp/
+android/
+android-native/
+backend/
+ecoguardian-web/
+supabase/
+node_modules/.*__tests__/
+.github/
+.vscode/
+.npm-cache/

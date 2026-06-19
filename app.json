@@ -1,0 +1,65 @@
+{
+  "expo": {
+    "name": "EcoGuardian AI",
+    "slug": "ecoguardian-ai",
+    "scheme": "ecoguardian",
+    "version": "13.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#154212"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.ecoguardian.ai",
+      "versionCode": 13,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#111413"
+      },
+      "permissions": [
+        "POST_NOTIFICATIONS",
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_LOCATION",
+        "RECEIVE_BOOT_COMPLETED",
+        "WAKE_LOCK"
+      ],
+      "config": {}
+    },
+    "ios": {
+      "bundleIdentifier": "com.ecoguardian.ai",
+      "supportsTablet": true
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-location",
+      "expo-notifications",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 24
+          }
+        }
+      ],
+      "./plugins/ecoguardian-native"
+    ],
+
+    "extra": {
+      "eas": {
+        "projectId": "ecoguardian-ai-local"
+      }
+    }
+  }
+}

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoTrack - Modern Sustainability Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .inner-glow {
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .eco-gradient {
+            background: radial-gradient(circle at top left, #f0f7f0 0%, #ffffff 100%);
+        }
+        .green-glow {
+            text-shadow: 0 0 20px rgba(59, 105, 52, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#154212",
+                      "inverse-on-surface": "#eff1ef",
+                      "outline": "#72796e",
+                      "surface-container-low": "#f2f4f2",
+                      "on-error-container": "#93000a",
+                      "on-surface": "#191c1b",
+                      "on-tertiary-fixed": "#001d32",
+                      "surface-container-highest": "#e1e3e1",
+                      "surface-container-high": "#e6e9e7",
+                      "secondary": "#486800",
+                      "primary-fixed": "#bcf0ae",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#123c5a",
+                      "primary-fixed-dim": "#a1d494",
+                      "inverse-surface": "#2e3130",
+                      "on-primary-fixed": "#002201",
+                      "surface-tint": "#3b6934",
+                      "surface-variant": "#e1e3e1",
+                      "secondary-fixed-dim": "#aad45d",
+                      "secondary-fixed": "#c6f176",
+                      "outline-variant": "#c2c9bb",
+                      "tertiary-container": "#2d5372",
+                      "surface": "#f8faf8",
+                      "surface-dim": "#d8dad9",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#2d5a27",
+                      "on-error": "#ffffff",
+                      "secondary-container": "#c3ee73",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed": "#cde5ff",
+                      "tertiary-fixed-dim": "#a5caef",
+                      "error-container": "#ffdad6",
+                      "inverse-primary": "#a1d494",
+                      "on-primary-container": "#9dd090",
+                      "surface-bright": "#f8faf8",
+                      "surface-container": "#eceeec",
+                      "on-background": "#191c1b",
+                      "on-secondary-container": "#4c6c00",
+                      "on-tertiary-fixed-variant": "#234a68",
+                      "background": "#f8faf8",
+                      "on-tertiary-container": "#a1c6ea",
+                      "on-primary-fixed-variant": "#23501e",
+                      "on-surface-variant": "#42493e",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed": "#131f00",
+                      "on-secondary-fixed-variant": "#364e00"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "40px",
+                      "xl": "80px",
+                      "lg": "48px",
+                      "xs": "4px",
+                      "gutter": "24px",
+                      "base": "8px",
+                      "container-max": "1280px",
+                      "md": "24px",
+                      "sm": "12px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Hanken Grotesk"],
+                      "headline-md-mobile": ["Literata"],
+                      "display-lg": ["Literata"],
+                      "headline-md": ["Literata"],
+                      "display-lg-mobile": ["Literata"],
+                      "body-md": ["Hanken Grotesk"],
+                      "title-lg": ["Hanken Grotesk"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "label-md": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface overflow-x-hidden eco-gradient min-h-screen">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl border-b border-white/20 dark:border-outline-variant/10 shadow-sm">
+<div class="flex items-center justify-between px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed shadow-sm">
+<img alt="Swayam" class="w-full h-full object-cover" data-alt="A professional portrait of a young man with a friendly expression, set against a blurred outdoor green environment. The lighting is soft and natural, emphasizing a high-end, modern lifestyle aesthetic that aligns with a premium sustainability app's user profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9kr1dc59WPfXx93KkJ-ZzNooRPPoJwApuyNRcwUHLpW5mYU_zbul6mmcD9eYD-nGagQr-fOhg5QRCAYFTwAl4uXRYs_VdZoJIsskqkX0yKcUxlmOAYmKTtg86XD3fQe2vU6oGJG78UICoAhEJrknRavFbVT5zNQEGeCvqPUrODNQF1h9wus0CAzRA730bFQ_lyCxmbEJfKaNvqr9QKGInCG7nbSuvIbpmPcIW9whj2tF_yvqMycSv782QqhKwjN4pE8nH-N6YLY37"/>
+</div>
+<div>
+<h1 class="font-title-lg text-title-lg text-primary leading-tight">Good Morning, Swayam</h1>
+<p class="text-label-sm text-on-surface-variant">Your eco-journey is flourishing</p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-high hover:opacity-80 transition-opacity active:scale-95 text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto space-y-lg">
+<!-- Hero Gauge Section -->
+<section class="relative min-h-[500px] flex items-center justify-center overflow-hidden rounded-xl">
+<!-- 3D Animation Background -->
+<!-- STITCH_THREEJS_START:ANIMATION_8 class="absolute inset-0 w-full h-full -z-10" -->
+<div class="absolute inset-0 w-full h-full -z-10" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_8" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_8');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  
+const container = document.getElementById('threejs-container') || document.body;
+const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+// Earth Group
+const earthGroup = new THREE.Group();
+scene.add(earthGroup);
+
+// Earth Sphere
+const geometry = new THREE.SphereGeometry(1, 64, 64);
+// Using a material that looks "natural" without needing external textures for now
+// We'll use a custom shader-like material for colors
+const material = new THREE.MeshPhongMaterial({
+    color: 0x4dab5d, // Leaf Green
+    emissive: 0x112211,
+    shininess: 10
+});
+const earth = new THREE.Mesh(geometry, material);
+earthGroup.add(earth);
+
+// Add some "clouds" or atmosphere
+const cloudGeom = new THREE.SphereGeometry(1.05, 32, 32);
+const cloudMat = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.3
+});
+const clouds = new THREE.Mesh(cloudGeom, cloudMat);
+earthGroup.add(clouds);
+
+// Floating Leaves (Particles)
+const leafCount = 15;
+const leaves = [];
+const leafGeom = new THREE.BoxGeometry(0.05, 0.1, 0.01);
+const leafMat = new THREE.MeshPhongMaterial({ color: 0x99c24d });
+
+for (let i = 0; i < leafCount; i++) {
+    const leaf = new THREE.Mesh(leafGeom, leafMat);
+    leaf.position.set(
+        (Math.random() - 0.5) * 4,
+        (Math.random() - 0.5) * 4,
+        (Math.random() - 0.5) * 2
+    );
+    leaf.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+    scene.add(leaf);
+    leaves.push({
+        mesh: leaf,
+        speed: 0.01 + Math.random() * 0.02,
+        rotSpeed: 0.02 + Math.random() * 0.05
+    });
+}
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+scene.add(ambientLight);
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+camera.position.z = 3;
+
+function animate() {
+    requestAnimationFrame(animate);
+    
+    earthGroup.rotation.y += 0.005;
+    clouds.rotation.y += 0.007;
+    
+    leaves.forEach(l => {
+        l.mesh.position.y -= l.speed;
+        l.mesh.rotation.x += l.rotSpeed;
+        l.mesh.rotation.z += l.rotSpeed;
+        if (l.mesh.position.y < -2) l.mesh.position.y = 2;
+    });
+
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+});
+
+animate();
+
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_8 -->
+<div class="glass inner-glow rounded-xl p-8 md:p-12 w-full max-w-lg text-center shadow-[0px_20px_50px_rgba(45,90,39,0.1)] border border-white/40">
+<div class="flex justify-center mb-6">
+<div class="flex bg-surface-container-low p-1 rounded-full border border-outline-variant/20">
+<button class="px-4 py-1.5 rounded-full text-label-sm bg-primary text-white shadow-sm transition-all">Daily</button>
+<button class="px-4 py-1.5 rounded-full text-label-sm text-on-surface-variant hover:bg-surface-container-high transition-all">Weekly</button>
+<button class="px-4 py-1.5 rounded-full text-label-sm text-on-surface-variant hover:bg-surface-container-high transition-all">Monthly</button>
+</div>
+</div>
+<div class="space-y-2">
+<span class="font-headline-md text-headline-md text-primary-container green-glow uppercase tracking-widest block">Excellent</span>
+<p class="text-body-md text-on-surface-variant px-8">Amazing! You're helping the planet stay green today.</p>
+</div>
+<div class="mt-8 relative inline-block">
+<!-- Gauge Visual Mockup -->
+<svg class="w-48 h-48 md:w-56 md:h-56 transform -rotate-90">
+<circle cx="50%" cy="50%" fill="transparent" r="45%" stroke="#f0f4f0" stroke-width="12"></circle>
+<circle cx="50%" cy="50%" fill="transparent" r="45%" stroke="url(#gradient-green)" stroke-dasharray="283" stroke-dashoffset="70" stroke-linecap="round" stroke-width="12"></circle>
+<defs>
+<lineargradient id="gradient-green" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#486800;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#154212;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-display-lg text-primary tracking-tight">12.4</span>
+<span class="text-label-sm text-on-surface-variant uppercase">kg CO2</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Environmental Health Status -->
+<section class="grid grid-cols-2 lg:grid-cols-4 gap-gutter overflow-x-auto hide-scrollbar">
+<div class="glass rounded-lg p-6 border border-white/20 shadow-sm min-w-[160px] flex flex-col justify-between h-40">
+<span class="text-label-sm text-on-surface-variant">Planet Health</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">88%</h3>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full w-[88%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="glass rounded-lg p-6 border border-white/20 shadow-sm min-w-[160px] flex flex-col justify-between h-40">
+<span class="text-label-sm text-on-surface-variant">Air Quality</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Good</h3>
+<p class="text-label-sm text-secondary flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> AQI 42
+                    </p>
+</div>
+</div>
+<div class="glass rounded-lg p-6 border border-white/20 shadow-sm min-w-[160px] flex flex-col justify-between h-40">
+<span class="text-label-sm text-on-surface-variant">Sustainability Score</span>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-md text-headline-md text-primary">92</h3>
+<span class="text-label-sm text-on-tertiary-fixed-variant">+5.2%</span>
+</div>
+</div>
+<div class="glass rounded-lg p-6 border border-white/20 shadow-sm min-w-[160px] flex flex-col justify-between h-40">
+<span class="text-label-sm text-on-surface-variant">Carbon Reduction</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">-15%</h3>
+<span class="text-label-sm text-on-surface-variant">vs last month</span>
+</div>
+</div>
+</section>
+<!-- Quick Action Cards (Grid) -->
+<section class="space-y-md">
+<h2 class="font-headline-md text-headline-md text-primary">Impact Categories</h2>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-md">
+<!-- Transportation -->
+<button class="bg-surface-container-lowest rounded-lg p-6 border border-outline-variant/10 shadow-sm hover:bg-primary-fixed/20 transition-all group text-left">
+<span class="material-symbols-outlined text-primary mb-4 block group-hover:scale-110 transition-transform">commute</span>
+<span class="font-label-md text-label-md block">Transportation</span>
+<span class="text-label-sm text-secondary">+2% Impact</span>
+</button>
+<!-- Electricity -->
+<button class="bg-surface-container-lowest rounded-lg p-6 border border-outline-variant/10 shadow-sm hover:bg-primary-fixed/20 transition-all group text-left">
+<span class="material-symbols-outlined text-primary mb-4 block group-hover:scale-110 transition-transform">bolt</span>
+<span class="font-label-md text-label-md block">Electricity</span>
+<span class="text-label-sm text-on-surface-variant">No change</span>
+</button>
+<!-- Food -->
+<button class="bg-surface-container-lowest rounded-lg p-6 border border-outline-variant/10 shadow-sm hover:bg-primary-fixed/20 transition-all group text-left">
+<span class="material-symbols-outlined text-primary mb-4 block group-hover:scale-110 transition-transform">restaurant</span>
+<span class="font-label-md text-label-md block">Food</span>
+<span class="text-label-sm text-secondary">+4% Impact</span>
+</button>
+<!-- Waste -->
+<button class="bg-surface-container-lowest rounded-lg p-6 border border-outline-variant/10 shadow-sm hover:bg-primary-fixed/20 transition-all group text-left">
+<span class="material-symbols-outlined text-primary mb-4 block group-hover:scale-110 transition-transform">recycling</span>
+<span class="font-label-md text-label-md block">Waste</span>
+<span class="text-label-sm text-on-surface-variant">Pending</span>
+</button>
+<!-- Water -->
+<button class="bg-surface-container-lowest rounded-lg p-6 border border-outline-variant/10 shadow-sm hover:bg-primary-fixed/20 transition-all group text-left">
+<span class="material-symbols-outlined text-primary mb-4 block group-hover:scale-110 transition-transform">water_drop</span>
+<span class="font-label-md text-label-md block">Water</span>
+<span class="text-label-sm text-secondary">+1% Impact</span>
+</button>
+</div>
+</section>
+<!-- Bento Grid: Insights & Danger Zone -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Smart AI Insights -->
+<div class="md:col-span-2 glass rounded-lg p-8 border border-white/40 flex flex-col md:flex-row items-center gap-8 shadow-sm">
+<div class="relative w-32 h-32 flex-shrink-0">
+<div class="absolute inset-0 bg-primary/10 rounded-full animate-pulse"></div>
+<div class="absolute inset-4 bg-primary/20 rounded-full animate-ping"></div>
+<div class="relative w-full h-full rounded-full overflow-hidden border-2 border-primary-fixed">
+<img alt="Eco Assistant" class="w-full h-full object-cover" data-alt="A clean, friendly digital avatar representing an AI assistant. The character has an approachable, minimalist design with soft green accents and is set in a vibrant, high-key digital workspace that feels intelligent and supportive. The visual style is premium and consistent with high-end tech branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1F7b2DEylxfMtXF0VQWQ9I8HG5huRpob_EV7CxrZXnLrdLES9AzNqZ28IP-Q6-9dlscFKSe0dL8jNB5DL3jr-ixTMpSEHPEMnTymmS5MYsPlXMqCJhgQtA8vY9ZE1iSs7c8xtJSS7rqIZlF0TugoqnVv6oWWkyLEYivLuy8LUwRZxkRNoZ9PBFfjoOPEqyeUQMrB7KuRgfqwQimVmE6Ofp7pzhE-I9ibbR1HwIhvAmiocoKM467gedAvG_kfvA9LzweOjqXIEQl9Z"/>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm uppercase tracking-wider">Your Eco Assistant</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Carbon Saving Opportunity</h3>
+<p class="text-body-lg text-on-surface-variant italic">"Walking 2 km today instead of driving could save 0.5 kg of CO2 emissions. It’s also a perfect morning for a stroll!"</p>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-md hover:opacity-90 transition-opacity">Add to Schedule</button>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="bg-error-container text-on-error-container rounded-lg p-8 flex flex-col justify-between border border-error/10 shadow-sm relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">warning</span>
+</div>
+<div class="space-y-4 relative z-10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error">trending_up</span>
+<span class="font-label-md uppercase">Usage Alert</span>
+</div>
+<h3 class="font-headline-md-mobile text-headline-md-mobile">Above Average</h3>
+<p class="text-body-md">Your carbon footprint is higher than usual this week due to excessive vehicle emissions.</p>
+</div>
+<button class="mt-6 border border-error/30 bg-white/20 px-6 py-2 rounded-full font-label-md backdrop-blur-sm hover:bg-white/40 transition-all">Review Activity</button>
+</div>
+</section>
+<!-- Charts Section -->
+<section class="glass rounded-lg p-8 border border-white/40 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Daily Trend</h2>
+<p class="text-label-sm text-on-surface-variant uppercase">Carbon Reduction Progress</p>
+</div>
+<div class="flex items-center gap-2 text-secondary font-label-md">
+<span class="material-symbols-outlined">trending_down</span>
+                    -12% vs last week
+                </div>
+</div>
+<!-- Progress Line Graph Placeholder -->
+<div class="w-full h-64 flex items-end justify-between gap-2 md:gap-4 px-2">
+<div class="flex-1 bg-surface-container-high rounded-t-xl h-1/2 relative group">
+<div class="absolute bottom-0 w-full bg-primary-fixed-dim rounded-t-xl h-[40%] transition-all group-hover:h-[45%]"></div>
+</div>
+<div class="flex-1 bg-surface-container-high rounded-t-xl h-3/4 relative group">
+<div class="absolute bottom-0 w-full bg-primary-fixed-dim rounded-t-xl h-[65%] transition-all group-hover:h-[70%]"></div>
+</div>
+<div class="flex-1 bg-surface-container-high rounded-t-xl h-2/3 relative group">
+<div class="absolute bottom-0 w-full bg-primary-fixed-dim rounded-t-xl h-[50%] transition-all group-hover:h-[55%]"></div>
+</div>
+<div class="flex-1 bg-surface-container-high rounded-t-xl h-4/5 relative group">
+<div class="absolute bottom-0 w-full bg-primary-fixed-dim rounded-t-xl h-[75%] transition-all group-hover:h-[80%]"></div>
+</div>
+<div class="flex-1 bg-surface-container-high rounded-t-xl h-1/2 relative group">
+<div class="absolute bottom-0 w-full bg-primary-fixed-dim rounded-t-xl h-[35%] transition-all group-hover:h-[40%]"></div>
+</div>
+<div class="flex-1 bg-surface-container-high rounded-t-xl h-5/6 relative group">
+<div class="absolute bottom-0 w-full bg-primary-container rounded-t-xl h-[90%] shadow-[0_0_20px_rgba(45,90,39,0.3)] transition-all group-hover:h-[95%]"></div>
+</div>
+<div class="flex-1 bg-surface-container-high rounded-t-xl h-full relative group">
+<div class="absolute bottom-0 w-full bg-primary-fixed-dim rounded-t-xl h-[80%] transition-all group-hover:h-[85%]"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 text-label-sm text-on-surface-variant px-2">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</section>
+<!-- Positive Impact Stats -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/10 flex items-center gap-6 shadow-sm">
+<div class="w-16 h-16 rounded-xl bg-secondary-container/30 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[32px]">forest</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">4</h4>
+<p class="text-label-sm text-on-surface-variant uppercase">Trees Saved</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/10 flex items-center gap-6 shadow-sm">
+<div class="w-16 h-16 rounded-xl bg-primary-fixed/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[32px]">cloud_done</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">12kg</h4>
+<p class="text-label-sm text-on-surface-variant uppercase">Carbon Reduced</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/10 flex items-center gap-6 shadow-sm">
+<div class="w-16 h-16 rounded-xl bg-secondary-fixed/30 flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[32px]">auto_awesome</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">15</h4>
+<p class="text-label-sm text-on-surface-variant uppercase">Green Days Streak</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-full bg-surface/80 dark:bg-surface-container-low/80 backdrop-blur-2xl border border-white/30 dark:border-outline-variant/20 shadow-[0px_10px_30px_rgba(45,90,39,0.15)] z-50 flex justify-around items-center px-6 py-3">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-all duration-300">
+<span class="material-symbols-outlined" data-weight="fill">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high/50 rounded-full p-2 transition-colors active:scale-90">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-sm text-label-sm">Activity</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high/50 rounded-full p-2 transition-colors active:scale-90">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high/50 rounded-full p-2 transition-colors active:scale-90">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="font-label-sm text-label-sm">Challenges</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container-high/50 rounded-full p-2 transition-colors active:scale-90">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions for glassmorphic elements
+        document.querySelectorAll('.glass').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+                
+                // Dynamic shadow tilt effect
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 25;
+                const rotateY = (centerX - x) / 25;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // Simple Intersection Observer for animation entrance
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-4');
+            observer.observe(section);
+        });
+    </script>
+</body></html>
