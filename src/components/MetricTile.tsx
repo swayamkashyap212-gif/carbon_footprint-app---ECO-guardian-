@@ -13,7 +13,12 @@ type Props = {
 
 export function MetricTile({ icon, label, value, detail }: Props) {
   return (
-    <GlassCard style={styles.card}>
+    <GlassCard
+      style={styles.card}
+      accessible={true}
+      accessibilityRole="text"
+      accessibilityLabel={`${label}: ${value}. ${detail}`}
+    >
       <View style={styles.iconContainer}>{icon}</View>
       <Text style={styles.label}>{label}</Text>
       <Text style={styles.value}>{value}</Text>

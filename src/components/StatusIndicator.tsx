@@ -58,7 +58,12 @@ export function StatusIndicator({ status, label, sublabel, icon, lastUpdated }: 
           : colors.surfaceHigh;
 
   return (
-    <View style={[styles.container, { backgroundColor: "rgba(255,255,255,0.9)", borderColor: "rgba(0,0,0,0.06)" }]}>
+    <View
+      style={[styles.container, { backgroundColor: "rgba(255,255,255,0.9)", borderColor: "rgba(0,0,0,0.06)" }]}
+      accessible={true}
+      accessibilityRole="text"
+      accessibilityLabel={`${label}: ${status}. ${sublabel || ""} ${lastUpdated ? `Last updated: ${lastUpdated}` : ""}`}
+    >
       <View style={[styles.iconContainer, { backgroundColor: statusBg }]}>
         <Ionicons name={icon as any} size={18} color={statusColor} />
       </View>

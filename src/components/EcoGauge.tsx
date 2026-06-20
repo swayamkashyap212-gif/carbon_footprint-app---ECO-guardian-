@@ -17,7 +17,13 @@ export function EcoGauge({ value, goal }: Props) {
   const strokeDashoffset = circumference - circumference * progress;
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      accessible={true}
+      accessibilityRole="progressbar"
+      accessibilityLabel={`Carbon emissions: ${value} kg CO2e. Status: ${status.label}. Goal: ${goal} kg.`}
+      accessibilityValue={{ min: 0, max: goal * 2, now: value }}
+    >
       <Svg width={156} height={156} viewBox="0 0 156 156">
         <Circle cx="78" cy="78" r={radius} stroke={colors.surfaceHigh} strokeWidth="8" fill="transparent" />
         <Circle

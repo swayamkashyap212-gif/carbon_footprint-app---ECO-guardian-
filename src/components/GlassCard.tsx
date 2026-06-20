@@ -16,7 +16,12 @@ const toneStyles = {
 
 export function GlassCard({ children, tone = "default", style, ...props }: Props) {
   return (
-    <View style={[styles.card, toneStyles[tone], style]} {...props}>
+    <View
+      accessible={true}
+      accessibilityRole="summary"
+      style={[styles.card, toneStyles[tone], style]}
+      {...props}
+    >
       {children}
     </View>
   );

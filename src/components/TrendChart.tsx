@@ -12,8 +12,15 @@ export function TrendChart({ data, goalKg = 9 }: Props) {
   const highThreshold = goalKg * 1.5;
   const midThreshold = goalKg * 1.1;
 
+  const chartDescription = data.map(d => `${d.day}: ${d.kg} kg`).join(", ");
+
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      accessible={true}
+      accessibilityRole="image"
+      accessibilityLabel={`Weekly carbon trend chart. Goal: ${goalKg} kg. Data: ${chartDescription}`}
+    >
       <View style={styles.chartArea}>
         {data.map((d, i) => {
           const heightPct = Math.max((d.kg / maxVal) * 100, 4);

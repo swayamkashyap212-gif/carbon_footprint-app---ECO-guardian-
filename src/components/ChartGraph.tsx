@@ -42,7 +42,12 @@ export function ChartGraph({ daily, weekly, monthly, yearly, goalKg = 9 }: Props
   const midThreshold = goalKg * 1.1;
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      accessible={true}
+      accessibilityRole="image"
+      accessibilityLabel={`Carbon emissions chart showing ${activeTab} data. Goal: ${goalKg} kg.`}
+    >
       <View style={[styles.tabBar, { backgroundColor: colors.surfaceHigh }]}>
         {tabs.map((tab) => (
           <Pressable
@@ -54,6 +59,9 @@ export function ChartGraph({ daily, weekly, monthly, yearly, goalKg = 9 }: Props
               },
             ]}
             onPress={() => setActiveTab(tab.key)}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: activeTab === tab.key }}
+            accessibilityLabel={`${tab.label} view`}
           >
             <Text
               style={[

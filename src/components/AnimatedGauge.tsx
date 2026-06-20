@@ -61,7 +61,13 @@ export function AnimatedGauge({
   });
 
   return (
-    <View style={[styles.container, { width: size, height: size }]}>
+    <View
+      style={[styles.container, { width: size, height: size }]}
+      accessible={true}
+      accessibilityRole="progressbar"
+      accessibilityLabel={label ? `${label}: ${value} ${unit || ""}` : `${value} ${unit || ""}`}
+      accessibilityValue={{ min: 0, max, now: value }}
+    >
       <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <Circle
           cx={size / 2}

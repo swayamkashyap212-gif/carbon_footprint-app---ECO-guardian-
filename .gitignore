@@ -9,6 +9,7 @@ backend/.npm-cache/
 backend/dist/
 dist/
 .gradle/
+coverage/
 expo.log
 *.log
 *.apk
