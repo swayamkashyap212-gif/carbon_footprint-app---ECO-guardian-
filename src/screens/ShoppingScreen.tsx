@@ -98,9 +98,19 @@ export function ShoppingScreen() {
       }
 
       const parsed = await parseShoppingReceipt(file.uri);
+
+      if (parsed.totalKgCo2e <= 0 && parsed.orderValue <= 0) {
+        Alert.alert("Scan Issue", "Could not extract items from the receipt. Please try manual entry.");
+        return;
+      }
+
       void syncShoppingLog(parsed, session?.access_token);
+
+      const itemText = parsed.productName || "Purchase";
+      const valueText = parsed.orderValue > 0 ? ` (Rs ${parsed.orderValue})` : "";
+      Alert.alert("Receipt Scanned", `${itemText}${valueText}: ${parsed.totalKgCo2e} kg CO₂e`);
     } catch (err) {
-      Alert.alert("Scan failed", "Could not parse the shopping receipt.");
+      Alert.alert("Scan failed", "Could not parse the shopping receipt. Please try again.");
     }
   }
 

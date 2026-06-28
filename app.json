@@ -3,7 +3,7 @@
     "name": "EcoGuardian AI",
     "slug": "ecoguardian-ai",
     "scheme": "ecoguardian",
-    "version": "13.0.0",
+    "version": "22.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
@@ -17,7 +17,7 @@
     ],
     "android": {
       "package": "com.ecoguardian.ai",
-      "versionCode": 13,
+      "versionCode": 22,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
       "backgroundColor": "#111413"
@@ -53,7 +53,8 @@
           }
         }
       ],
-      "./plugins/ecoguardian-native"
+      "./plugins/ecoguardian-native",
+      "./plugins/test-receiver"
     ],
 
     "extra": {

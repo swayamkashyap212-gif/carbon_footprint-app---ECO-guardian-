@@ -156,6 +156,16 @@ export async function syncNotificationEventToBackend(parsed: NotificationParsed)
     };
 
     store.addRideBooking(booking);
+    // Also add as carbon entry for dashboard tracking
+    store.addEntry({
+      id: `rb-${booking.id}`,
+      category: "transport" as const,
+      label: `${displayName} ride (${Math.round(distanceKm * 10) / 10} km)`,
+      kgCo2e: carbonKg,
+      source: "notification",
+      occurredAt: now,
+      metadata: { platform: parsed.platform, rideType: booking.rideType, distanceKm }
+    });
     store.addPoints(5, "action_logged", `${displayName} ride detected`);
     addPendingVehicleSelection(displayName, booking.id, parsed.orderId, "ride_booking");
 
@@ -214,6 +224,16 @@ export async function syncNotificationEventToBackend(parsed: NotificationParsed)
     };
 
     store.addFoodDelivery(delivery);
+    // Also add as carbon entry for dashboard tracking
+    store.addEntry({
+      id: `fd-${entryId}`,
+      category: "food_delivery" as const,
+      label: `${displayName} - ${parsed.title || "Restaurant"} (${Math.round(distanceKm * 10) / 10} km)`,
+      kgCo2e: carbonKg,
+      source: "notification",
+      occurredAt: now,
+      metadata: { platform: parsed.platform, restaurantName: parsed.title, distanceKm, vehicleType }
+    });
     store.addPoints(5, "action_logged", `${displayName} food delivery detected`);
     store.updateStreak("no_food_delivery", false);
 
@@ -263,6 +283,16 @@ export async function syncNotificationEventToBackend(parsed: NotificationParsed)
     };
 
     store.addGroceryDelivery(delivery);
+    // Also add as carbon entry for dashboard tracking
+    store.addEntry({
+      id: `gd-${entryId}`,
+      category: "grocery_delivery" as const,
+      label: `${displayName} - ${parsed.title || "Store"} (${Math.round(distanceKm * 10) / 10} km)`,
+      kgCo2e: carbonKg,
+      source: "notification",
+      occurredAt: now,
+      metadata: { platform: parsed.platform, storeName: parsed.title, distanceKm, vehicleType, isQuickCommerce }
+    });
     store.addPoints(5, "action_logged", `${displayName} grocery delivery detected`);
 
     activeOrders.set(orderId, { id: entryId, platform: parsed.platform, status: parsed.status || "confirmed", createdAt: Date.now() });
